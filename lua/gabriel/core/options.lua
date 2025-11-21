@@ -12,7 +12,7 @@ opt.undofile = true
 opt.tabstop = 4
 opt.softtabstop = 4
 opt.shiftwidth = 4
-opt.expandtap = true
+opt.expandtab = true
 opt.smartindent = true
 
 if vim.g.neovide then

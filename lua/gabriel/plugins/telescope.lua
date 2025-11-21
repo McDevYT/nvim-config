@@ -14,7 +14,6 @@ return {
 		keymap.set('n', '<leader>fd', ':Telescope find_files<cr>')
 		keymap.set('n', '<leader>fs', ':Telescope live_grep<cr>')
 		keymap.set('n', '<leader>fg', ':Telescope git_files<cr>')
-		keymap.set('n', '<leader>fd', ':Telescope find_files<cr>')
 		keymap.set('n', '<leader>fc', ':Telescope grep_string<cr>')
 		keymap.set('n', '<leader>fl', ':Telescope lsp_document_symbols<cr>')
 		keymap.set('n', '<leader>fh', ':Telescope help_tags<cr>')
