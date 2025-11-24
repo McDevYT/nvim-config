@@ -24,48 +24,47 @@ return {
     end,
   },
 
-  -- nvim-lspconfig (core LSP)
 
-    
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = { "williamboman/mason-lspconfig.nvim" },
-    config = function()
-      local lspconfig = require("lspconfig")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
+{
+  "neovim/nvim-lspconfig",
+  dependencies = { "williamboman/mason-lspconfig.nvim" },
+  config = function()
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- TypeScript / JavaScript
-      lspconfig.tsserver.setup({
-        capabilities = capabilities,
-      })
+    -- Configure servers (override defaults if needed)
+    vim.lsp.config("tsserver", {
+      capabilities = capabilities,
+    })
 
-      -- HTML
-      lspconfig.html.setup({
-        capabilities = capabilities,
-      })
+    vim.lsp.config("html", {
+      capabilities = capabilities,
+    })
 
-      -- CSS
-      lspconfig.cssls.setup({
-        capabilities = capabilities,
-      })
+    vim.lsp.config("cssls", {
+      capabilities = capabilities,
+    })
 
-      -- Emmet
-      lspconfig.emmet_ls.setup({
-        capabilities = capabilities,
-      })
+    vim.lsp.config("emmet_ls", {
+      capabilities = capabilities,
+    })
 
-      -- Lua (for editing Neovim)
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
-        settings = {
-          Lua = {
-            diagnostics = { globals = { "vim" } },
-          },
+    vim.lsp.config("lua_ls", {
+      capabilities = capabilities,
+      settings = {
+        Lua = {
+          diagnostics = { globals = { "vim" } },
         },
-      })
-    end,
-  },
+      },
+    })
 
+    -- Enable all of them
+    vim.lsp.enable("tsserver")
+    vim.lsp.enable("html")
+    vim.lsp.enable("cssls")
+    vim.lsp.enable("emmet_ls")
+    vim.lsp.enable("lua_ls")
+  end,
+},
   -- Autocomplete engine (nvim-cmp)
   {
     "hrsh7th/nvim-cmp",
