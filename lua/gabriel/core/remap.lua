@@ -42,3 +42,10 @@ keymap.set('n', '<Leader>t', '', {
     end
   end
 })
+
+keymap.set("n", "gr", vim.lsp.buf.references)
+
+keymap.set("n", "K", vim.lsp.buf.hover)
+keymap.set("i", "<C-k>", vim.lsp.buf.signature_help)
+
+keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>")

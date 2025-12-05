@@ -12,14 +12,6 @@ return{
                     width = 35,
                     side = "left",
                     preserve_window_proportions = true,
-                    mappings = {
-                        list = {
-                            { key = {"<CR>", "o"}, action = "edit" },
-                            { key = "v", action = "vsplit" },
-                            { key = "s", action = "split" },
-                            { key = "t", action = "tabnew" },
-                        },
-                    },
                 },
                 renderer = {
                     icons = {
