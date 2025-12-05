@@ -1,5 +1,4 @@
 
--- lua/plugins/vim-prettier.lua
 return {
     "prettier/vim-prettier",
     build = "yarn install --frozen-lockfile --production", -- optional if using yarn, or npm i
