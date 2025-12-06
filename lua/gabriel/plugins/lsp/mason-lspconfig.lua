@@ -8,9 +8,9 @@ return {
           "html",
           "cssls",
           "emmet_ls",
-          "lua_ls",
+          "spyglass-language-server"
         }
       })
-end,
-},
+end
+}
 

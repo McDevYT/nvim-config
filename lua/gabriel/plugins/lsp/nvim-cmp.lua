@@ -12,7 +12,7 @@ return {
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
     -- Configure servers (override defaults if needed)
-    vim.lsp.config("tsserver", {
+    vim.lsp.config("ts_ls", {
       capabilities = capabilities,
     })
 
@@ -28,25 +28,14 @@ return {
       capabilities = capabilities,
     })
 
-    vim.lsp.config("lua_ls", {
-      capabilities = capabilities,
-      settings = {
-        Lua = {
-          diagnostics = { globals = { "vim" } },
-        },
-      },
-    })
-
     -- Enable all of them
-    vim.lsp.enable("tsserver")
+    vim.lsp.enable("ts_ls")
     vim.lsp.enable("html")
     vim.lsp.enable("cssls")
     vim.lsp.enable("emmet_ls")
-    vim.lsp.enable("lua_ls")
   end,
 },
       "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
     },
     config = function()
       local cmp = require("cmp")
@@ -54,7 +43,6 @@ return {
       cmp.setup({
         snippet = {
           expand = function(args)
-            require("luasnip").lsp_expand(args.body)
           end,
         },
         mapping = cmp.mapping.preset.insert({
@@ -63,7 +51,6 @@ return {
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
-          { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
         }),
