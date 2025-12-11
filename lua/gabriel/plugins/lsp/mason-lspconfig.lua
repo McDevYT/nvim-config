@@ -8,7 +8,8 @@ return {
           "html",
           "cssls",
           "emmet_ls",
-          "spyglass-language-server"
+          "spyglass_language_server",
+            "terraformls"
         }
       })
 end

@@ -27,12 +27,18 @@ return {
     vim.lsp.config("emmet_ls", {
       capabilities = capabilities,
     })
+    
+    vim.lsp.config("terraformls", {
+        capabilities= capabilities,
+    })
 
     -- Enable all of them
     vim.lsp.enable("ts_ls")
     vim.lsp.enable("html")
     vim.lsp.enable("cssls")
     vim.lsp.enable("emmet_ls")
+    vim.lsp.enable("spyglass_language_server")
+    vim.lsp.enable("terraformls")
   end,
 },
       "L3MON4D3/LuaSnip",
