@@ -22,8 +22,8 @@ opt.smartindent = true
 if vim.g.neovide then
     local g = vim.g
     opt.guifont = 'JetBrainsMono NF'
-    g.neovide_opacity = 1
-    g.neovide_scale_factor = 0.9
+    g.neovide_opacity = 0.8
+    g.neovide_scale_factor = 0.7
     g.neovide_cursor_animate_in_insert_mode = true
     g.neovide_cursor_animate_command_line = true
     g.neovide_floating_blur_amount_x = 3
