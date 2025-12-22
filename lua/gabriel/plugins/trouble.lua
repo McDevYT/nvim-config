@@ -1,5 +1,39 @@
 return {
     "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons"},
-    opts = {},
+    dependencies = "nvim-tree/nvim-web-devicons",
+    opts = {
+        position = "bottom",
+        height = 10,
+        width = 50,
+        mode = "workspace_diagnostics",
+        fold_open = "",
+        fold_closed = "",
+        group = true,
+        padding = true,
+        action_keys = {
+            close = "q",
+            cancel = "<esc>",
+            refresh = "r",
+            jump = {"<cr>", "<tab>"},
+            open_split = {"<c-x>"},
+            open_vsplit = {"<c-v>"},
+            open_tab = {"<c-t>"},
+            jump_close = {"o"},
+            toggle_mode = "m",
+            toggle_preview = "P",
+            hover = "K",
+            preview = "p",
+            close_folds = {"zM", "zm"},
+            open_folds = {"zR", "zr"},
+            toggle_fold = {"za"},
+            previous = "k",
+            next = "j"
+        },
+        use_diagnostic_signs = true,
+    },
+    keys = {
+        { "<leader>td", ":Trouble diagnostics<cr>", desc = "Trouble: Document Diagnostics" },
+        { "<leader>tq", ":Trouble quickfix<cr>", desc = "Trouble: Quickfix" },
+        { "<leader>tl", ":Trouble loclist<cr>", desc = "Trouble: Loclist" },
+    }
 }

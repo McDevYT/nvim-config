@@ -6,7 +6,7 @@ keymap.set('n', '<leader>ee', ':Yazi<cr>')
 
 keymap.set('t', '<ESC>', '<C-\\><C-n>', {noremap = true})
 
-keymap.set('n', '<Leader>t', '', {
+keymap.set('n', '<Leader>te', '', {
   noremap = true,
   silent = true,
   callback = function()
@@ -48,18 +48,22 @@ keymap.set("n", "gr", vim.lsp.buf.references)
 keymap.set("n", "K", vim.lsp.buf.hover)
 keymap.set("i", "<C-k>", vim.lsp.buf.signature_help)
 
-keymap.set("n", "<leader>e", ":NvimTreeToggle<cr>")
+keymap.set("n", "<leader>ex", ":NvimTreeToggle<cr>")
 -- Paste from clipboard
-vim.keymap.set("n", "<leader>v", '"+p', { noremap = true, silent = true })
-vim.keymap.set("v", "<leader>v", '"+p', { noremap = true, silent = true })
+keymap.set("n", "<leader>v", '"+p', { noremap = true, silent = true })
+keymap.set("v", "<leader>v", '"+p', { noremap = true, silent = true })
 
 -- Copy to clipboard
-vim.keymap.set("n", "<leader>c", '"+y', { noremap = true, silent = true })
-vim.keymap.set("v", "<leader>c", '"+y', { noremap = true, silent = true })
+keymap.set("n", "<leader>c", '"+y', { noremap = true, silent = true })
+keymap.set("v", "<leader>c", '"+y', { noremap = true, silent = true })
 
 
 -- Better window navigation
-vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
+keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true })
+keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
+keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
+
+keymap.set("n", "<F2>", function()
+    vim.lsp.buf.rename()
+   end)
