@@ -1,0 +1,3 @@
+return {
+    "sailorfe/luna.nvim"
+}

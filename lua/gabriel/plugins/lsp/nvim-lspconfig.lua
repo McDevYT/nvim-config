@@ -5,7 +5,6 @@ config = function()
 
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-  -- Live diagnostics (like VS Code)
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
       underline = true,

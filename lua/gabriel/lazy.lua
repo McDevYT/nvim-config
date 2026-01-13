@@ -19,6 +19,7 @@ require("lazy").setup({
     { import = "gabriel.plugins" },
     { import = "gabriel.plugins.lsp" },
     { import = "gabriel.plugins.colorschemes" },
+    { import = "gabriel.plugins.colorschemes.weird" },
   },
   checker = {
     enable = true,

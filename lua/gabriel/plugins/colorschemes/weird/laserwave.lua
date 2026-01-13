@@ -1,0 +1,3 @@
+return {
+    "lettertwo/laserwave.nvim"
+}
