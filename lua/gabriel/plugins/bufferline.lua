@@ -1,4 +1,3 @@
-
 return {
   "akinsho/bufferline.nvim",
   dependencies = "nvim-tree/nvim-web-devicons",
@@ -11,13 +10,10 @@ return {
           {
             filetype = "NvimTree",
             text = "File Explorer",
-            text_align = "center"
-          }
+            text_align = "center",
+          },
         },
-        show_buffer_close_icons = false,
-        show_close_icon = true,
         separator_style = "thin",
-        enforce_regular_tabs = true,
       },
     })
 

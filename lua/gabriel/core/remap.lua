@@ -67,3 +67,5 @@ keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true })
 keymap.set("n", "<F2>", function()
     vim.lsp.buf.rename()
    end)
+
+keymap.set("n", "<F3>", ":Telescope colorscheme<cr>")
