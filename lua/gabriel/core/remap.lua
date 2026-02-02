@@ -50,13 +50,12 @@ keymap.set("i", "<C-k>", vim.lsp.buf.signature_help)
 
 keymap.set("n", "<leader>ex", ":NvimTreeToggle<cr>")
 -- Paste from clipboard
-keymap.set("n", "<leader>v", '"+p', { noremap = true, silent = true })
-keymap.set("v", "<leader>v", '"+p', { noremap = true, silent = true })
+keymap.set("n", "<leader>p", '"+p', { noremap = true, silent = true })
+keymap.set("v", "<leader>p", '"+p', { noremap = true, silent = true })
 
 -- Copy to clipboard
-keymap.set("n", "<leader>c", '"+y', { noremap = true, silent = true })
-keymap.set("v", "<leader>c", '"+y', { noremap = true, silent = true })
-
+keymap.set("n", "<leader>y", '"+y', { noremap = true, silent = true })
+keymap.set("v", "<leader>y", '"+y', { noremap = true, silent = true })
 
 -- Better window navigation
 keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })

@@ -3,6 +3,7 @@ return {
     dependencies = "nvim-tree/nvim-web-devicons",
     opts = {
         position = "bottom",
+        auto_preview = false,
         height = 10,
         width = 50,
         mode = "workspace_diagnostics",
