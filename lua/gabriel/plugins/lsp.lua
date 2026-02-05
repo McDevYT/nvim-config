@@ -31,7 +31,12 @@ return {
         tsserver = {},
         pyright = {},
         html = {},
-        cssls = {},
+        cssls = {
+          filetypes = { "css", "scss", "less" },
+          root_dir = function(fname)
+            return vim.fs.root(fname, { "package.json", ".git" }) or vim.fs.dirname(fname)
+          end,
+        },
         emmet_ls = {},
         spyglassmc_language_server = {},
         terraformls = {},

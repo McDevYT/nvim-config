@@ -17,6 +17,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { import = "gabriel.plugins" },
+    { import = "gabriel.plugins.colorschemes" },
+    { import = "gabriel.plugins.colorschemes.weird" },
   },
   checker = {
     enable = true,
