@@ -29,25 +29,40 @@ return {
 
       local servers = {
         tsserver = {},
+        pyright = {},
         html = {},
         cssls = {},
         emmet_ls = {},
         spyglassmc_language_server = {},
         terraformls = {},
+        lua_ls = {
+          settings = {
+            Lua = {
+              diagnostics = { globals = { "vim" } },
+              workspace = { checkThirdParty = false },
+              telemetry = { enable = false },
+            },
+          },
+        },
       }
 
       local mason_lspconfig = require("mason-lspconfig")
       local available_servers = mason_lspconfig.get_available_servers()
 
-      local ensure_installed = {}
+      local enabled_servers = {}
       for server_name, _ in pairs(servers) do
         if list_contains(available_servers, server_name) then
-          table.insert(ensure_installed, server_name)
+          table.insert(enabled_servers, server_name)
+        else
+          vim.notify(
+            ("Skipping LSP '%s' (not supported by mason-lspconfig)"):format(server_name),
+            vim.log.levels.WARN
+          )
         end
       end
 
       mason_lspconfig.setup({
-        ensure_installed = ensure_installed,
+        ensure_installed = enabled_servers,
         automatic_installation = true,
       })
 
@@ -69,9 +84,11 @@ return {
         -- Prefer external formatters (conform.nvim) for these.
         local disable_formatting = {
           tsserver = true,
+          pyright = true,
           html = true,
           cssls = true,
           emmet_ls = true,
+          lua_ls = true,
         }
 
         if disable_formatting[client.name] then
@@ -80,21 +97,15 @@ return {
         end
       end
 
-      local lspconfig = require("lspconfig")
-      for server_name, server_config in pairs(servers) do
-        local server = lspconfig[server_name]
-        if not server then
-          vim.notify(
-            ("LSP server '%s' is not available in nvim-lspconfig"):format(server_name),
-            vim.log.levels.WARN
-          )
-        else
-          server.setup(vim.tbl_deep_extend("force", {
-            capabilities = capabilities,
-            on_attach = on_attach,
-          }, server_config))
-        end
+      for _, server_name in ipairs(enabled_servers) do
+        local server_config = servers[server_name] or {}
+        vim.lsp.config(server_name, vim.tbl_deep_extend("force", {
+          capabilities = capabilities,
+          on_attach = on_attach,
+        }, server_config))
       end
+
+      vim.lsp.enable(enabled_servers)
     end,
   },
 
