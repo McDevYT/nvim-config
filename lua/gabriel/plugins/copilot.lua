@@ -3,9 +3,9 @@ return {
   cmd = "Copilot",
   event = "InsertEnter",
   config = function()
+    local node = vim.fn.exepath("node")
     require("copilot").setup({
-      -- PASTE THE PATH FROM STEP A HERE:
-      copilot_node_command = '/usr/sbin/node', 
+      copilot_node_command = node ~= "" and node or nil,
       
       suggestion = { enabled = true },
       panel = { enabled = false },

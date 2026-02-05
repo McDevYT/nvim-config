@@ -13,7 +13,7 @@ return {
                 },
                 -- Optional: run tests in terminal
                 run = {
-                    terminal = "toggleterm", -- or "neoterm", or "integrated"
+                    terminal = "integrated", -- or "neoterm", or "toggleterm" (requires extra plugin)
                 },
             })
         end,

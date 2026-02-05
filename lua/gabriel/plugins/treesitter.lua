@@ -4,7 +4,7 @@ return {
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
   },
-  run = ":TSUpdate",
+  build = ":TSUpdate",
   config = function()
     require("nvim-treesitter.configs").setup {
       ensure_installed = { "lua", "python", "javascript", "typescript", "c", "cpp","json","bash","tsx","html","css" }, -- languages to install

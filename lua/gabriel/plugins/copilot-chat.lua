@@ -5,7 +5,11 @@ return {
     { "zbirenbaum/copilot.lua" }, -- or "github/copilot.vim"
     { "nvim-lua/plenary.nvim" },   -- required for math/utility functions
   },
-  build = "make tiktoken", -- compiles the tokenizer (REQUIRED for macOS/Linux)
+  build = function()
+    if vim.fn.executable("make") == 1 then
+      vim.fn.system({ "make", "tiktoken" })
+    end
+  end,
   opts = {
     -- specific options for the chat window
     window = {
