@@ -1,116 +1,92 @@
-local function list_contains(list, value)
-  for _, v in ipairs(list) do
-    if v == value then
-      return true
-    end
-  end
-  return false
-end
-
 return {
   {
-    "neovim/nvim-lspconfig",
+    "williamboman/mason.nvim",
     dependencies = {
-      { "williamboman/mason.nvim", config = true },
-      "williamboman/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
-      "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
-      vim.diagnostic.config({
-        underline = true,
-        update_in_insert = true,
-        virtual_text = { spacing = 2, prefix = "●" },
-        severity_sort = true,
+      require("mason").setup()
+
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "prettier",
+          "stylua",
+          "black",
+          "shfmt",
+          "eslint_d",
+        },
       })
+    end,
+  },
 
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      capabilities.textDocument.completion.completionItem.snippetSupport = false
-
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    config = function()
       local servers = {
         tsserver = {},
-        pyright = {},
         html = {},
-        cssls = {
-          filetypes = { "css", "scss", "less" },
-          root_dir = function(fname)
-            return vim.fs.root(fname, { "package.json", ".git" }) or vim.fs.dirname(fname)
-          end,
-        },
+        cssls = {},
         emmet_ls = {},
-        spyglassmc_language_server = {},
-        terraformls = {},
+        pyright = {},
         lua_ls = {
           settings = {
             Lua = {
               diagnostics = { globals = { "vim" } },
-              workspace = { checkThirdParty = false },
-              telemetry = { enable = false },
+              completion = { callSnippet = "Replace" },
             },
           },
         },
       }
 
       local mason_lspconfig = require("mason-lspconfig")
-      local available_servers = mason_lspconfig.get_available_servers()
+      local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      local enabled_servers = {}
-      for server_name, _ in pairs(servers) do
-        if list_contains(available_servers, server_name) then
-          table.insert(enabled_servers, server_name)
-        else
-          vim.notify(
-            ("Skipping LSP '%s' (not supported by mason-lspconfig)"):format(server_name),
-            vim.log.levels.WARN
-          )
-        end
-      end
+      capabilities.textDocument.completion.completionItem.snippetSupport = true
 
       mason_lspconfig.setup({
-        ensure_installed = enabled_servers,
+        ensure_installed = vim.tbl_keys(servers),
         automatic_installation = true,
-      })
 
-      require("mason-tool-installer").setup({
-        ensure_installed = {
-          -- Formatters
-          "prettier",
-          "stylua",
-          "black",
-          "shfmt",
+        handlers = {
+          function(server_name)
+            local server_config = servers[server_name] or {}
 
-          -- Lint helpers (optional, but useful if you later add nvim-lint)
-          "eslint_d",
+            server_config.capabilities =
+              vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
+
+            server_config.on_attach = function(client, bufnr)
+              local disable_formatting = {
+                tsserver = true,
+                html = true,
+                cssls = true,
+                lua_ls = true,
+              }
+              if disable_formatting[client.name] then
+                client.server_capabilities.documentFormattingProvider = false
+              end
+            end
+
+            require("lspconfig")[server_name].setup(server_config)
+          end,
         },
-        run_on_start = true,
       })
+    end,
+  },
 
-      local function on_attach(client, _)
-        -- Prefer external formatters (conform.nvim) for these.
-        local disable_formatting = {
-          tsserver = true,
-          pyright = true,
-          html = true,
-          cssls = true,
-          emmet_ls = true,
-          lua_ls = true,
-        }
-
-        if disable_formatting[client.name] then
-          client.server_capabilities.documentFormattingProvider = false
-          client.server_capabilities.documentRangeFormattingProvider = false
-        end
-      end
-
-      for _, server_name in ipairs(enabled_servers) do
-        local server_config = servers[server_name] or {}
-        vim.lsp.config(server_name, vim.tbl_deep_extend("force", {
-          capabilities = capabilities,
-          on_attach = on_attach,
-        }, server_config))
-      end
-
-      vim.lsp.enable(enabled_servers)
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      "williamboman/mason-lspconfig.nvim",
+      "hrsh7th/cmp-nvim-lsp",
+    },
+    config = function()
+      vim.diagnostic.config({
+        underline = true,
+        update_in_insert = false,
+        virtual_text = { spacing = 4, prefix = "●" },
+        severity_sort = true,
+      })
     end,
   },
 
@@ -121,28 +97,30 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
+      "L3MON4D3/LuaSnip",
+      "saadparwaiz1/cmp_luasnip",
     },
     config = function()
       local cmp = require("cmp")
+      local luasnip = require("luasnip")
       local types = require("cmp.types")
 
       cmp.setup({
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
         mapping = cmp.mapping.preset.insert({
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
           ["<C-Space>"] = cmp.mapping.complete(),
         }),
-
-        sources = {
-          {
-            name = "nvim_lsp",
-            entry_filter = function(entry)
-              -- Remove ALL snippet items from LSP
-              return entry:get_kind() ~= types.lsp.CompletionItemKind.Snippet
-            end,
-          },
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
-        },
+        }),
       })
     end,
   },
