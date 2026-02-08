@@ -29,7 +29,7 @@ if vim.g.neovide then
   g.neovide_floating_shadow = true
   g.neovide_hide_mouse_when_typing = true
   g.neovide_cursor_trail_size = 0.4
-  g.neovide_cursor_animation_length = 0.05
+  g.neovide_cursor_animation_length = 0.03
   g.neovide_cursor_vfx_mode = ""
 end
 
