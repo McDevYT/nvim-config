@@ -17,6 +17,9 @@ opt.shiftwidth = 4
 opt.expandtab = true
 opt.smartindent = true
 
+opt.ignorecase = true
+opt.smartcase = true
+
 if vim.g.neovide then
   local g = vim.g
   opt.guifont = "JetBrainsMono NF"

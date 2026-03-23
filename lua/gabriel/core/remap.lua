@@ -68,3 +68,8 @@ keymap.set("n", "<F2>", function()
    end)
 
 keymap.set("n", "<F3>", ":Telescope colorscheme<cr>")
+keymap.set("n", "<leader>gg", ":Telescope git_status<cr>")
+
+vim.keymap.set({ "n", "i", "v", "t" }, "<F11>", function()
+  vim.g.neovide_fullscreen = not vim.g.neovide_fullscreen
+end, { noremap = true, silent = true })
