@@ -2,7 +2,7 @@ local opt = vim.opt
 
 opt.list = true
 opt.listchars = { eol = " " }
-opt.relativenumber = false
+opt.relativenumber = true
 opt.number = true
 opt.cursorline = true
 
@@ -23,7 +23,7 @@ opt.smartcase = true
 if vim.g.neovide then
   local g = vim.g
   opt.guifont = "JetBrainsMono NF"
-  g.neovide_opacity = 1.9
+  g.neovide_opacity = 1
   g.neovide_scale_factor = 0.75
   g.neovide_cursor_animate_in_insert_mode = true
   g.neovide_cursor_animate_command_line = true
