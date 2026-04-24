@@ -1,2 +1,2 @@
-require('gabriel.core.remap');
-require('gabriel.core.options');
+require("gabriel.core.remap")
+require("gabriel.core.options")

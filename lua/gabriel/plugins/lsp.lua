@@ -82,58 +82,82 @@ return {
         severity_sort = true,
       })
 
-      -- 2. AUTOMATIC INDENTATION SYNC (Reads .prettierrc via Node)
-      -- This ensures Neovim tabs match Prettier config exactly, per file.
-      vim.api.nvim_create_autocmd("BufEnter", {
-        group = vim.api.nvim_create_augroup("PrettierIndentation", { clear = true }),
+      -- 2. Keep indentation in sync with Prettier when it is available.
+      local prettier_filetypes = {
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "css",
+        "scss",
+        "json",
+        "html",
+        "yaml",
+        "markdown",
+      }
+
+      local prettier_group = vim.api.nvim_create_augroup("PrettierIndentation", { clear = true })
+
+      local function apply_prettier_indent(bufnr)
+        if vim.b[bufnr].prettier_indent_checked then
+          return
+        end
+        vim.b[bufnr].prettier_indent_checked = true
+
+        if vim.fn.executable("node") == 0 then
+          return
+        end
+
+        local file_path = vim.api.nvim_buf_get_name(bufnr)
+        if file_path == "" then
+          return
+        end
+
+        local prettier_probe = [[
+const file = process.argv[1];
+(async () => {
+  try {
+    const prettier = require("prettier");
+    const cfg = await prettier.resolveConfig(file);
+    process.stdout.write(JSON.stringify(cfg || null));
+  } catch (_) {
+    process.stdout.write("null");
+  }
+})();
+]]
+
+        vim.fn.jobstart({ "node", "-e", prettier_probe, file_path }, {
+          stdout_buffered = true,
+          on_stdout = function(_, data)
+            local payload = data and data[1] or nil
+            if not payload or payload == "" or payload == "null" then
+              return
+            end
+
+            local ok, config = pcall(vim.json.decode, payload)
+            if not ok or type(config) ~= "table" or not vim.api.nvim_buf_is_valid(bufnr) then
+              return
+            end
+
+            if config.tabWidth then
+              vim.bo[bufnr].tabstop = config.tabWidth
+              vim.bo[bufnr].shiftwidth = config.tabWidth
+              vim.bo[bufnr].softtabstop = config.tabWidth
+            end
+            if config.useTabs ~= nil then
+              vim.bo[bufnr].expandtab = not config.useTabs
+            end
+          end,
+        })
+      end
+
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+        group = prettier_group,
         pattern = "*",
-        callback = function()
-          -- Only run for web-related types
-          local filetypes = {
-            "javascript",
-            "javascriptreact",
-            "typescript",
-            "typescriptreact",
-            "css",
-            "scss",
-            "json",
-            "html",
-            "yaml",
-            "markdown",
-          }
-          if not vim.tbl_contains(filetypes, vim.bo.filetype) then
-            return
+        callback = function(args)
+          if vim.tbl_contains(prettier_filetypes, vim.bo[args.buf].filetype) then
+            apply_prettier_indent(args.buf)
           end
-
-          local file_path = vim.api.nvim_buf_get_name(0)
-          if file_path == "" then
-            return
-          end
-
-          -- Query Prettier for the config of this specific file
-          local cmd = string.format(
-            'node -e \'const p = require("prettier"); p.resolveConfig("%s").then(c => console.log(JSON.stringify(c)))\'',
-            file_path
-          )
-
-          vim.fn.jobstart(cmd, {
-            on_stdout = function(_, data)
-              if data and data[1] and data[1] ~= "" and data[1] ~= "null" then
-                local success, config = pcall(vim.json.decode, data[1])
-                if success and config then
-                  if config.tabWidth then
-                    vim.bo.tabstop = config.tabWidth
-                    vim.bo.shiftwidth = config.tabWidth
-                    vim.bo.softtabstop = config.tabWidth
-                  end
-                  if config.useTabs ~= nil then
-                    vim.bo.expandtab = not config.useTabs
-                  end
-                end
-              end
-            end,
-            stdout_buffered = true,
-          })
         end,
       })
     end,

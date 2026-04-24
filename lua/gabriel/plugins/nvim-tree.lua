@@ -33,9 +33,10 @@ return {
 
       vim.api.nvim_create_autocmd("VimEnter", {
         callback = function()
-          local root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-          if root and root ~= "" then
-            vim.cmd("cd " .. root)
+          local cwd = vim.fn.getcwd()
+          local root = vim.fs.root(cwd, { ".git" })
+          if root and root ~= cwd then
+            vim.cmd.cd(vim.fn.fnameescape(root))
           end
         end,
       })

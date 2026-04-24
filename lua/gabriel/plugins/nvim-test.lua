@@ -1,9 +1,12 @@
 return {
     {
         "klen/nvim-test",
-        dependencies = { "nvim-lua/plenary.nvim" },
+        cmd = { "TestNearest", "TestFile", "TestSuite", "TestLast", "TestVisit" },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
         config = function()
-            -- Setup nvim-test
             require("nvim-test").setup({
                 runners = {
                     javascript = "jest",
@@ -11,9 +14,8 @@ return {
                     javascriptreact = "jest",
                     typescriptreact = "jest",
                 },
-                -- Optional: run tests in terminal
                 run = {
-                    terminal = "integrated", -- or "neoterm", or "toggleterm" (requires extra plugin)
+                    terminal = "integrated",
                 },
             })
         end,

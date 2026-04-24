@@ -7,7 +7,7 @@ return {
   },
   config = function()
     local telescope = require("telescope")
-    telescope.load_extension("fzf")
+    pcall(telescope.load_extension, "fzf")
 
     local keymap = vim.keymap
 

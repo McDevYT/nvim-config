@@ -8,8 +8,13 @@ opt.cursorline = true
 
 opt.swapfile = false
 opt.backup = false
-opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+local undodir = os.getenv("HOME") .. "/.vim/undodir"
+opt.undodir = undodir
 opt.undofile = true
+
+if vim.fn.isdirectory(undodir) == 0 then
+  vim.fn.mkdir(undodir, "p")
+end
 
 opt.tabstop = 4
 opt.softtabstop = 4
