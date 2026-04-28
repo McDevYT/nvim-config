@@ -20,6 +20,6 @@ return {
     local map = vim.keymap.set
     map("n", "<S-l>", ":BufferLineCycleNext<CR>")
     map("n", "<S-h>", ":BufferLineCyclePrev<CR>")
-    map("n", "<leader>bd", ":bdelete<CR>")
+    map("n", "<leader>bd", ":bdelete!<CR>")
   end,
 }
