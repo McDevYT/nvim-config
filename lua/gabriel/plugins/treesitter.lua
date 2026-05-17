@@ -30,7 +30,9 @@ return {
         enable = true,
         additional_vim_regex_highlighting = false,
       },
-      indent = { enable = false },
+      indent = {
+        enable = true,
+      },
       textobjects = {
         select = {
           enable = true,
@@ -45,9 +47,6 @@ return {
       },
     })
 
-    -- Neovim 0.12 + nvim-treesitter markdown injections can crash on fenced code
-    -- blocks due to a directive path in plugin queries. Use the runtime markdown
-    -- injections query, which is stable with the current core runtime.
     local query_files = vim.api.nvim_get_runtime_file("queries/markdown/injections.scm", true)
     local runtime_query_path = nil
     for _, path in ipairs(query_files) do

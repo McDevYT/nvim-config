@@ -1,4 +1,5 @@
 local opt = vim.opt
+local g = vim.g
 
 opt.list = true
 opt.listchars = { eol = " " }
@@ -8,26 +9,25 @@ opt.cursorline = true
 
 opt.swapfile = false
 opt.backup = false
+opt.undofile = true
 local undodir = os.getenv("HOME") .. "/.vim/undodir"
 opt.undodir = undodir
-opt.undofile = true
 
 if vim.fn.isdirectory(undodir) == 0 then
   vim.fn.mkdir(undodir, "p")
 end
 
-opt.tabstop = 4
-opt.softtabstop = 4
-opt.shiftwidth = 4
 opt.expandtab = true
 opt.autoindent = true
 opt.smartindent = true
+opt.tabstop = 4
+opt.shiftwidth = 4
 
 opt.ignorecase = true
 opt.smartcase = true
+opt.shortmess:append("c")
 
-if vim.g.neovide then
-  local g = vim.g
+if g.neovide then
   opt.guifont = "JetBrainsMono NF"
   g.neovide_opacity = 1
   g.neovide_scale_factor = 0.75
@@ -46,7 +46,6 @@ vim.filetype.add({
   extension = {
     mcfunction = "mcfunction",
     tf = "terraform",
+    tsx = "typescriptreact",
   },
 })
-
-opt.shortmess:append("c")

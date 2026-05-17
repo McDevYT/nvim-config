@@ -214,7 +214,7 @@ const file = process.argv[1];
         sources = cmp.config.sources({
           {
             name = "nvim_lsp",
-            -- Filter out annoying LSP snippets (Keep this!)
+            -- Filter out annoying LSP snippets
             entry_filter = function(entry, ctx)
               if entry:get_kind() == 15 then
                 return false
@@ -227,6 +227,8 @@ const file = process.argv[1];
           { name = "path" },
         }),
       })
+      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
     end,
   },
 }
